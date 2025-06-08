@@ -35,6 +35,15 @@ pipeline {
                 sh 'echo "Deploy stage - Simulate deployment here"'
             }
         }
+        stage('Deploy pm2') {
+            steps {
+                sh '''
+                pm2 delete app || true
+                pm2 start index.js --name "app"
+               '''
+    }
+}
+
     }
 
     post {
