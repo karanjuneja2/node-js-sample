@@ -35,6 +35,16 @@ pipeline {
                 sh 'echo "Deploy stage - Simulate deployment here"'
             }
         }
+
+        stage('Deploy') {
+            steps {
+                sh '''
+                    npm install -g pm2
+                    pm2 delete myapp || true  # stop previous instance if exists
+                    pm2 start index.js --name myapp  # start new instance
+                    pm2 save
+                    }
+                    }
     }
 
     post {
