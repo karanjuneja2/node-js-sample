@@ -30,7 +30,7 @@ pipeline {
             }
         }
 
-        stage('Deploy') {
+        stage('Deploy1') {
             steps {
                 sh 'echo "Deploy stage - Simulate deployment here"'
             }
