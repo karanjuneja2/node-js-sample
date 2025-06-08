@@ -1,54 +1,23 @@
 pipeline {
     agent any
 
-    tools {
-        nodejs "Node18" // make sure NodeJS is configured in Jenkins tools
-    }
-
     stages {
-        stage('Clone') {
+        stage('Clone Repo') {
             steps {
                 git 'https://github.com/karanjuneja2/node-js-sample.git'
             }
         }
 
-        stage('Install') {
+        stage('Build Docker Image') {
             steps {
-                sh 'npm install'
+                sh 'docker build -t nodejs-sample-app .'
             }
         }
 
-        stage('Test') {
+        stage('List Docker Images') {
             steps {
-                sh 'npm test || echo "No tests configured"'
+                sh 'docker images'
             }
-        }
-
-        stage('Build') {
-            steps {
-                sh 'echo "Build stage (optional for Node.js app)"'
-            }
-        }
-
-        stage('Deploy1') {
-            steps {
-                sh 'echo "Deploy stage - Simulate deployment here"'
-            }
-        }
-        stage('Deploy pm2') {
-            steps {
-                sh '''
-                pm2 delete app || true
-                pm2 start index.js --name "app"
-               '''
-    }
-}
-
-    }
-
-    post {
-        always {
-            echo 'Pipeline finished.'
         }
     }
 }
