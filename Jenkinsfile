@@ -1,23 +1,23 @@
 pipeline {
     agent any
-
     stages {
-        stage('Clone Repo') {
+        stage("run frontend") {
             steps {
-                git 'https://github.com/karanjuneja2/node-js-sample.git'
+                echo 'execute yarn'
+                nodejs('node 24.2') {
+                    sh 'yarn install'
+            }
+            }
+        }
+  
+        stage("run backend") {
+            steps {
+                echo 'execute gradle'
+                withGradle() {
+                    sh './gradlew -v'
+                }
             }
         }
 
-        stage('Build Docker Image') {
-            steps {
-                sh 'docker build -t nodejs-sample-app .'
-            }
-        }
-
-        stage('List Docker Images') {
-            steps {
-                sh 'docker images'
-            }
-        }
     }
 }
